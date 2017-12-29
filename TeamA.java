@@ -2,6 +2,7 @@ package org.firstinspires.ftc.robotcontroller.internal;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
@@ -15,20 +16,22 @@ import java.util.concurrent.BrokenBarrierException;
 
 public class TeamA extends OpMode {
 
-    DcMotor FLeft;
-    DcMotor FRight;
+    DcMotor FLeft, FRight;
 
-    DcMotor BLeft;
-    DcMotor BRight;
+    DcMotor BLeft, BRight;
 
-    DcMotor Lift_Motor;
-    DcMotor Extention;
+    DcMotor Lift_Motor, Extension;
 
-    Servo Claw_1;
-    Servo Claw_2;
+    Servo Claw_1, Claw_2;
+
 
     @Override
-    public void init() {
+    public void init()
+    {
+        telemetry.addData("Status:","Initialized");
+        telemetry.addData("Status:","Ready to run!");
+        telemetry.update();
+
         FLeft = hardwareMap.dcMotor.get("FLeft");
         FRight = hardwareMap.dcMotor.get("FRight");
 
@@ -37,7 +40,7 @@ public class TeamA extends OpMode {
 
         Lift_Motor = hardwareMap.dcMotor.get("Lift_Motor");
 
-        Extention = hardwareMap.dcMotor.get("Extention");
+        Extension = hardwareMap.dcMotor.get("Extention");
 
         Claw_1 = hardwareMap.servo.get("Claw_1");
         Claw_2 = hardwareMap.servo.get("Claw_2");
@@ -60,7 +63,7 @@ public class TeamA extends OpMode {
             BRight.setPower(-1.0);
         }
         //Right Left
-        else if (gamepad1.x)
+        else if (gamepad1.left_stick_x>=1)
             {
             FRight.setPower(-1.0);
             BRight.setPower(1.0);
@@ -68,7 +71,7 @@ public class TeamA extends OpMode {
             FLeft.setPower(-1.0);
             BLeft.setPower(1.0);
         }
-         else if (gamepad1.b)
+         else if (gamepad1.left_stick_x < 0)
         {
             FLeft.setPower(1.0);
             BLeft.setPower(-1.0);
@@ -77,7 +80,7 @@ public class TeamA extends OpMode {
             BRight.setPower(-1.0);
         }
         //Rotation
-        else if (gamepad1.y)
+        else if (gamepad1.b)
         {
             FRight.setPower(1.0);
             BLeft.setPower(-1.0);
@@ -107,6 +110,35 @@ public class TeamA extends OpMode {
         {
             FRight.setPower(1.0);
             BLeft.setPower(1.0);
+        }
+        //Gamepad two servo movement
+        if (gamepad2.b)
+        {
+            Claw_1.setPosition(1.0);
+            Claw_2.setPosition(1.0);
+        }
+        else if (gamepad2.a)
+        {
+            Claw_1.setPosition(0.0);
+            Claw_2.setPosition(0.0);
+        }
+        //Lift Movement
+        if (gamepad2.dpad_up)
+        {
+            Lift_Motor.setPower(0.5);
+        }
+        else if (gamepad2.dpad_down)
+        {
+            Lift_Motor.setPower(-0.5);
+        }
+        // Extension Movement
+        if (gamepad2.x)
+        {
+            Extension.setPower(0.5);
+        }
+        else if (gamepad2.y)
+        {
+            Extension.setPower(-0.5);
         }
         }
 }
