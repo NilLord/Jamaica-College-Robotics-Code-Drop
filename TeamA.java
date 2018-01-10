@@ -1,28 +1,21 @@
-package org.firstinspires.ftc.robotcontroller.internal;
+package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
-import java.util.concurrent.BrokenBarrierException;
-
 /**
- * Created by Aawon on 12/20/2017.
+ * Created by JCTeamA on 12/20/2017.
  */
 
-@TeleOp(name = "Senior Team", group = "First")
+@TeleOp(name = "TeamA", group = "First")
 
-public class TeamA extends OpMode {
+public class TeamATeleOp extends OpMode {
 
-    DcMotor FLeft, FRight;
-
-    DcMotor BLeft, BRight;
-
-    DcMotor Lift_Motor, Extension;
-
-    Servo Claw_1, Claw_2;
+    DcMotor FMLeft, FMRight, BMLeft, BMRight, Lift_Motor, Extension;
+    Servo   Claw_1, Claw_2;
+    Double xymove, zmove;
 
 
     @Override
@@ -32,21 +25,22 @@ public class TeamA extends OpMode {
         telemetry.addData("Status:","Ready to run!");
         telemetry.update();
 
-        FLeft = hardwareMap.dcMotor.get("FLeft");
-        FRight = hardwareMap.dcMotor.get("FRight");
-
-        BLeft = hardwareMap.dcMotor.get("BLeft");
-        BRight = hardwareMap.dcMotor.get("BRight");
+        FMLeft = hardwareMap.dcMotor.get("FMLeft");
+        FMRight = hardwareMap.dcMotor.get("FMRight");
+        BMLeft = hardwareMap.dcMotor.get("BMLeft");
+        BMRight = hardwareMap.dcMotor.get("BMRight");
+        xymove = 1.0;
+        zmove = 0.5;
 
         Lift_Motor = hardwareMap.dcMotor.get("Lift_Motor");
 
-        Extension = hardwareMap.dcMotor.get("Extention");
+        Extension = hardwareMap.dcMotor.get("Extension");
 
         Claw_1 = hardwareMap.servo.get("Claw_1");
         Claw_2 = hardwareMap.servo.get("Claw_2");
 
-        FRight.setDirection(DcMotor.Direction.REVERSE);
-        BRight.setDirection(DcMotor.Direction.REVERSE);
+        FMRight.setDirection(DcMotor.Direction.REVERSE);
+        BMRight.setDirection(DcMotor.Direction.REVERSE);
 
     }
     @Override
@@ -54,68 +48,68 @@ public class TeamA extends OpMode {
         //Forward Backward
         if (gamepad1.left_stick_y >= 1)
         {
-            FLeft.setPower(1.0);
-            FRight.setPower(1.0);
+            FMLeft.setPower(xymove);
+            FMRight.setPower(xymove);
         }
         else if (gamepad1.left_stick_y < 0)
         {
-            BLeft.setPower(-1.0);
-            BRight.setPower(-1.0);
+            BMLeft.setPower(-xymove);
+            BMRight.setPower(-xymove);
         }
         //Right Left
         else if (gamepad1.left_stick_x>=1)
-            {
-            FRight.setPower(-1.0);
-            BRight.setPower(1.0);
-
-            FLeft.setPower(-1.0);
-            BLeft.setPower(1.0);
-        }
-         else if (gamepad1.left_stick_x < 0)
         {
-            FLeft.setPower(1.0);
-            BLeft.setPower(-1.0);
+            FMRight.setPower(-xymove);
+            BMRight.setPower(xymove);
 
-            FRight.setPower(1.0);
-            BRight.setPower(-1.0);
+            FMLeft.setPower(-xymove);
+            BMLeft.setPower(xymove);
+        }
+        else if (gamepad1.left_stick_x < 0)
+        {
+            FMLeft.setPower(xymove);
+            BMLeft.setPower(-xymove);
+
+            FMRight.setPower(xymove);
+            BMRight.setPower(-xymove);
         }
         //Rotation
         else if (gamepad1.b)
         {
-            FRight.setPower(1.0);
-            BLeft.setPower(-1.0);
+            FMRight.setPower(xymove);
+            BMLeft.setPower(-xymove);
         }
         else if (gamepad1.a)
         {
-            FLeft.setPower(1.0);
-            BRight.setPower(1.0);
+            FMLeft.setPower(xymove);
+            BMRight.setPower(xymove);
         }
         //Diagonal Movement
         else if (gamepad1.right_trigger>=1)
         {
-            FRight.setPower(1.0);
-            BLeft.setPower(1.0);
+            FMRight.setPower(xymove);
+            BMLeft.setPower(xymove);
         }
         else if (gamepad1.left_trigger>=1)
         {
-            FLeft.setPower(1.0);
-            BRight.setPower(1.0);
+            FMLeft.setPower(xymove);
+            BMRight.setPower(xymove);
         }
         else if (gamepad1.right_bumper)
         {
-            FLeft.setPower(1.0);
-            BRight.setPower(1.0);
+            FMLeft.setPower(xymove);
+            BMRight.setPower(xymove);
         }
         else if (gamepad1.left_bumper)
         {
-            FRight.setPower(1.0);
-            BLeft.setPower(1.0);
+            FMRight.setPower(xymove);
+            BMLeft.setPower(xymove);
         }
         //Gamepad two servo movement
         if (gamepad2.b)
         {
-            Claw_1.setPosition(1.0);
-            Claw_2.setPosition(1.0);
+            Claw_1.setPosition(xymove);
+            Claw_2.setPosition(xymove);
         }
         else if (gamepad2.a)
         {
@@ -125,20 +119,20 @@ public class TeamA extends OpMode {
         //Lift Movement
         if (gamepad2.dpad_up)
         {
-            Lift_Motor.setPower(0.5);
+            Lift_Motor.setPower(zmove);
         }
         else if (gamepad2.dpad_down)
         {
-            Lift_Motor.setPower(-0.5);
+            Lift_Motor.setPower(-zmove);
         }
         // Extension Movement
         if (gamepad2.x)
         {
-            Extension.setPower(0.5);
+            Extension.setPower(zmove);
         }
         else if (gamepad2.y)
         {
-            Extension.setPower(-0.5);
+            Extension.setPower(-zmove);
         }
-        }
+    }
 }
