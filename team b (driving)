@@ -1,0 +1,62 @@
+package org.firstinspires.ftc.robotcontroller.internal;
+
+import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
+
+/**
+ * Created by Administrator on 1/17/2018.
+ */
+@TeleOp(name = "example", group = "First")
+public class example extends OpMode {
+
+    DcMotor A1, A2, A3, A4;
+    double FS, SS;
+
+    @Override
+    public void init() {
+        telemetry.addData("Status:", "Initialized");
+        telemetry.addData("Status:", "Ready to run!");
+        telemetry.update();
+
+        A1 = hardwareMap.dcMotor.get("A1");
+        A2 = hardwareMap.dcMotor.get("A2");
+
+        A3 = hardwareMap.dcMotor.get("A3");
+        A4 = hardwareMap.dcMotor.get("A4");
+
+        FS =1.0;
+        SS =0.5;
+
+    }
+
+    @Override
+    public void loop() {
+        // Forward Backward
+        if (gamepad1.left_stick_y >= 1) {
+
+            A1.setPower(FS);
+            A2.setPower(FS);
+        } else if (gamepad1.left_stick_y <= 0) {
+
+            A3.setPower(-FS);
+            A4.setPower(-FS);
+        }
+        //Right Left
+        else if (gamepad1.left_stick_x >= 0) {
+            A2.setPower(-FS);
+            A4.setPower(FS);
+
+            A1.setPower(-FS);
+            A3.setPower(FS);
+        }
+        else if (gamepad1.left_stick_x <= 0) {
+            A1.setPower(FS);
+            A3.setPower(-FS);
+
+            A2.setPower(FS);
+            A4.setPower(-FS);
+        }
+
+    }
+}
