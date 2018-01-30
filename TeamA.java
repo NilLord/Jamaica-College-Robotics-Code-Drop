@@ -9,9 +9,9 @@ import com.qualcomm.robotcore.hardware.Servo;
  * Created by JCTeamA on 12/20/2017.
  */
 
-@TeleOp(name = "TeamA", group = "First")
+@TeleOp(name = "TeamAMovement", group = "First")
 
-public class TeamATeleOp extends OpMode {
+public class TeamA extends OpMode {
 
     DcMotor FMLeft, FMRight, BMLeft, BMRight, Lift_Motor, Extension;
     Servo   Claw_1, Claw_2;
