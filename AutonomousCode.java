@@ -5,6 +5,7 @@ import android.view.View;
 import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cColorSensor;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cColorSensor;
@@ -28,9 +29,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 public class AutonomousCode extends LinearOpMode {
     DcMotor M1,M2,M3,M4;
     private ElapsedTime     runtime = new ElapsedTime();
-    View relativeLayout;
     public static final String TAG = "Vuforia Navigation Sample";
-    OpenGLMatrix lastLocation = null; // WARNING: VERY INACCURATE, USE ONLY TO ADJUST TO FIND IMAGE AGAIN! DO NOT BASE MAJOR MOVEMENTS OFF OF THIS!!
     double tX; // X value extracted from our the offset of the traget relative to the robot.
     double tZ; // Same as above but for Z
     double tY; // Same as above but for Y
@@ -58,10 +57,17 @@ public class AutonomousCode extends LinearOpMode {
         telemetry.addData("Status", "Ready to run");
         telemetry.update();
         waitForStart();
-                
-        // Step through each leg of the path, ensuring that the Auto mode has not been stopped along the way
-        runtime.reset();
 
+        //
+        runtime.reset();
+        while (opModeIsActive() && (runtime.seconds() < 1.5)) {
+            telemetry.addData("Path", "Leg 1: %2.5f S Elapsed", runtime.seconds());
+            telemetry.update();
+            M1.setPower(Forwardsp);
+            M2.setPower(Forwardsp);
+            M3.setPower(Forwardsp);
+            M4.setPower(Forwardsp);
+        }
 
         //Turn the robot to the cypher
         while (opModeIsActive() && (runtime.seconds() < 1.8)) {
@@ -92,14 +98,14 @@ public class AutonomousCode extends LinearOpMode {
             camera();
         }
 
-        //Drive Backwards for 1 Second
-        while (opModeIsActive() && (runtime.seconds() < 1.0)) {
+        //Drive Backwards
+        while (opModeIsActive() && (runtime.seconds() < 0.7)) {
             telemetry.addData("Path", "Leg 3: %2.5f S Elapsed", runtime.seconds());
             telemetry.update();
-            M1.setPower(-Forwardsp);
-            M2.setPower(-Forwardsp);
-            M3.setPower(-Forwardsp);
-            M4.setPower(-Forwardsp);
+            M1.setPower(-Turnsp);
+            M2.setPower(Turnsp);
+            M3.setPower(Turnsp);
+            M4.setPower(-Turnsp);
             sleep(3000);
             M1.setPower(0);
             M2.setPower(0);
@@ -112,7 +118,7 @@ public class AutonomousCode extends LinearOpMode {
         so that the robot can know how long to move forward for to go to the location.
         The code comparing the cyphers will be place above the if statement in the colour sensor.
          */
-        while (opModeIsActive() && (runtime.seconds() < 0))
+        while (opModeIsActive() && (runtime.seconds() < 0.8))
 
             //This is the end used to stop at while on the balance pad
             M1.setPower(0);
@@ -128,17 +134,50 @@ public class AutonomousCode extends LinearOpMode {
 
     public void left()
     {
-
+        while (opModeIsActive() && (runtime.seconds() < 1.5)) {
+            telemetry.addData("Path", "Leg 1: %2.5f S Elapsed", runtime.seconds());
+            telemetry.update();
+            M1.setPower(Forwardsp);
+            M2.setPower(Forwardsp);
+            M3.setPower(Forwardsp);
+            M4.setPower(Forwardsp);
+        }
+        M1.setPower(0);
+        M2.setPower(0);
+        M3.setPower(0);
+        M4.setPower(0);
     }
 
     public void right()
     {
-
+        while (opModeIsActive() && (runtime.seconds() < 1.8)) {
+            telemetry.addData("Path", "Leg 1: %2.5f S Elapsed", runtime.seconds());
+            telemetry.update();
+            M1.setPower(Forwardsp);
+            M2.setPower(Forwardsp);
+            M3.setPower(Forwardsp);
+            M4.setPower(Forwardsp);
+        }
+        M1.setPower(0);
+        M2.setPower(0);
+        M3.setPower(0);
+        M4.setPower(0);
     }
 
     public void center()
     {
-
+        while (opModeIsActive() && (runtime.seconds() < 2.0)) {
+            telemetry.addData("Path", "Leg 1: %2.5f S Elapsed", runtime.seconds());
+            telemetry.update();
+            M1.setPower(Forwardsp);
+            M2.setPower(Forwardsp);
+            M3.setPower(Forwardsp);
+            M4.setPower(Forwardsp);
+        }
+        M1.setPower(0);
+        M2.setPower(0);
+        M3.setPower(0);
+        M4.setPower(0);
     }
 
     public void camera ()
@@ -201,6 +240,6 @@ public class AutonomousCode extends LinearOpMode {
 
     protected void coloursense() throws InterruptedException
     {
-
+        bottomsenser.enableLed(true);
     }
 }
